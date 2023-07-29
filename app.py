@@ -1,3 +1,8 @@
+import os
+import sys
+# Add the parent directory of the 'data' folder to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px

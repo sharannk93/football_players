@@ -1,7 +1,12 @@
 import os
 import sys
-# Add the parent directory of the 'data' folder to the Python path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Get the directory of the current script (app.py)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Add the 'data' folder to the Python path
+data_folder = os.path.join(current_dir, 'data')
+sys.path.append(data_folder)
 
 import streamlit as st
 import pandas as pd

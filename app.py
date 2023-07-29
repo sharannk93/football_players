@@ -215,13 +215,26 @@ elif action == 'Find similar players':
     #st.write("Select your player")
     selected_player = st.selectbox('Select player', players_df['full_name'].unique())
 
-    #st.write("Select age")
+  # Find the URL of the selected player's image
+    selected_player_image_url = players_df.loc[players_df['full_name'] == selected_player, 'player_face_url'].values[0]
+
+    # Display the image of the selected player
+    if selected_player_image_url:
+        st.image(selected_player_image_url, caption=selected_player, width=200)
+    else:
+        st.write(f"Image not available for {selected_player}.")
+   
+    
+    # st.write("Select age")
     selected_age = st.slider('Select age', min_value=int(players_df['age'].min()), max_value=int(players_df['age'].max()), value=(int(players_df['age'].min()), int(players_df['age'].max())))
 
     #st.write("Select league")
     selected_leagues = st.multiselect('Select league', players_df['league'].unique(), default=players_df['league'].unique())
 
-    #st.write("Select height (cm)")
+    #st.write("Select league")
+    selected_positions = st.multiselect('Select Position', players_df['position'].unique(), default=players_df['position'].unique())
+
+#st.write("Select height (cm)")
     selected_height = st.slider('Select height (cm)', min_value=int(players_df['height_cm'].min()), max_value=int(players_df['height_cm'].max()), value=(int(players_df['height_cm'].min()), int(players_df['height_cm'].max())))
 
     #st.write("Select pace in FIFA 23")
@@ -233,6 +246,7 @@ elif action == 'Find similar players':
         (players_df['age'] >= selected_age[0]) &
         (players_df['age'] <= selected_age[1]) &
         (players_df['league'].isin(selected_leagues)) &
+        (players_df['position'].isin(selected_positions)) &
         (players_df['height_cm'] >= selected_height[0]) &
         (players_df['height_cm'] <= selected_height[1]) &
         (players_df['pace'] >= selected_pace[0]) &
@@ -253,7 +267,28 @@ elif action == 'Find similar players':
 
     # Display the table with the top 5 similar players
     st.write("Top 5 most similar players:")
-    st.dataframe(top_5_similar_players[['full_name', 'age', 'league', 'Similarity score']])
+    #st.dataframe(top_5_similar_players[['full_name', 'age', 'league', 'Similarity score']])
+    
+    # Display the images of the top 5 similar players
+    for rank, (_, player_row) in enumerate(top_5_similar_players.iterrows(), 1):
+       player_name = player_row['full_name']
+       player_image_url = player_row['player_face_url']
+       similarity_score = player_row['Similarity score']
+       player_age = player_row['age']
+       player_league = player_row['league']
+       player_position = player_row['position']
+
+       if player_image_url:
+           # Display the image of the player
+           st.image(player_image_url, caption=player_name, width=150)
+           # Display the Rank, league, age, and similarity score
+           st.write(f"<p style='font-size: 16px;'><b>Rank {rank}</b></p>", unsafe_allow_html=True)
+           st.write(f"<p style='font-size: 16px;'><b>League:</b> {player_league}</p>", unsafe_allow_html=True)
+           st.write(f"<p style='font-size: 16px;'><b>Age:</b> {player_age}</p>", unsafe_allow_html=True)
+           st.write(f"<p style='font-size: 16px;'><b>Position:</b> {player_position}</p>", unsafe_allow_html=True)
+           st.write(f"<p style='font-size: 16px;'><b>Similarity Score:</b> {similarity_score}</p>", unsafe_allow_html=True)
+       else:
+           st.write(f"Image not available for {player_name}.")
 
      # Radar chart for the selected player and the top 5 similar players
     radar_data = pd.concat([selected_player_data, top_5_similar_players[['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won', 'pace']]])

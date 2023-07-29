@@ -1,7 +1,9 @@
 import pandas as pd
 import os
 
+
 def load_players_data():
+    #function used to load the file
     current_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(current_dir, 'players.csv')
     try:

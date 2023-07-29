@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 def load_players_data():
     current_dir = os.path.dirname(os.path.abspath(__file__))

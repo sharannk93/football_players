@@ -2,9 +2,11 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from sklearn.metrics.pairwise import cosine_similarity
+from data_loader import load_players_data
 
 # Load the CSV file
-players_df = pd.read_csv('players.csv')
+#players_df = pd.read_csv('players.csv')
+players_df = load_players_data()
 
 # Set bigger font size for the whole app
 st.markdown(
@@ -75,9 +77,6 @@ By scaling the scores from 0 to 100, it becomes much simpler to identify and ran
 # Display explanation text when the button is clicked
 if explain_scoring_button:
     explanation_placeholder.markdown(explanation_text)
-
-# Rest of your code for Option 1 and Option 2...
-
 
 
 # Option 1: Compare selected players

@@ -266,7 +266,7 @@ elif action == 'Find similar players':
     top_5_similar_players = filtered_players_df.sort_values(by='Similarity score', ascending=False).head(5)
 
     # Display the table with the top 5 similar players
-    st.write("Top 5 most similar players:")
+    st.markdown("<span style='font-size: 40px;'>Top 5 similar players </span>", unsafe_allow_html=True)
     #st.dataframe(top_5_similar_players[['full_name', 'age', 'league', 'Similarity score']])
     
     # Display the images of the top 5 similar players
@@ -290,6 +290,7 @@ elif action == 'Find similar players':
        else:
            st.write(f"Image not available for {player_name}.")
 
+    st.markdown("<span style='font-size: 40px;'>Analytics </span>", unsafe_allow_html=True)
      # Radar chart for the selected player and the top 5 similar players
     radar_data = pd.concat([selected_player_data, top_5_similar_players[['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won', 'pace']]])
     radar_data['Player'] = [selected_player] + list(top_5_similar_players['full_name'])

@@ -75,6 +75,8 @@ Tackling: The Tackling score is calculated using the number of successful tackle
 
 Aerials won: This score is obtained by dividing the total number of aerial duels won by the player over all matches by the total minutes played. It represents the player's ability to win aerial challenges, such as headers.
 
+Pace: This score is taken from fifa 23 database
+
 Each of these scores evaluates a specific aspect of a player's performance in a soccer match and helps in understanding their strengths and contributions to the team.
 
 After calculating each player's score for each KPI, their scores are then compared to all the other players in the dataset. The scores are scaled that they range from 0 to 100, with 100 representing the best possible score and 0 indicating the worst possible score for that particular KPI.
@@ -87,6 +89,9 @@ By scaling the scores from 0 to 100, it becomes much simpler to identify and ran
 # Display explanation text when the button is clicked
 if explain_scoring_button:
     explanation_placeholder.markdown(explanation_text)
+
+# Rest of your code for Option 1 and Option 2...
+
 
 
 # Option 1: Compare selected players
@@ -101,7 +106,7 @@ if action == 'Compare selected players of your choice':
         # Reshape the DataFrame to have attributes as values in a separate column
         selected_players_melted = pd.melt(selected_players_df, id_vars=['full_name'], value_vars=[
             'Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling',
-            'Interceptions', 'Tackling', 'Aerials won'], var_name='attribute', value_name='score')
+            'Interceptions', 'Tackling', 'Aerials won', 'pace'], var_name='attribute', value_name='score')
 
         # Radar chart
         fig = px.line_polar(selected_players_melted, r='score', theta='attribute', line_close=True, color='full_name')
@@ -117,7 +122,7 @@ if action == 'Compare selected players of your choice':
             return None
 
         # Highlight player with the highest value in each attribute
-        for attribute in ['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won']:
+        for attribute in ['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won', 'pace']:
             max_player_name = selected_players_df.loc[selected_players_df[attribute].idxmax(), 'full_name']
             max_player_score = selected_players_df.loc[selected_players_df[attribute].idxmax(), attribute]
             player_color = get_player_color(max_player_name)
@@ -125,6 +130,7 @@ if action == 'Compare selected players of your choice':
                 st.markdown(f"<span style='color:{player_color}'>{max_player_name}</span> has the best <b>{attribute}</b> score of <b>{max_player_score}</b> from the players selected.", unsafe_allow_html=True)
 
         st.plotly_chart(fig)
+
 
 # Option 2: Scout players based on criteria
 elif action == 'Scout players based on your criteria':
@@ -160,6 +166,12 @@ elif action == 'Scout players based on your criteria':
 
     # Question 11: Select aerials won score range
     min_aerials_won, max_aerials_won = st.slider('Select aerials won score range', min_value=float(players_df['Aerials won'].min()), max_value=float(players_df['Aerials won'].max()), value=(float(players_df['Aerials won'].min()), float(players_df['Aerials won'].max())))
+    
+    # Question 12: Select pace score range
+    min_pace, max_pace = st.slider('Select pace score range', min_value=float(players_df['pace'].min()), max_value=float(players_df['pace'].max()), value=(float(players_df['pace'].min()), float(players_df['pace'].max())))
+
+    # Question 13: Select height
+    min_height, max_height = st.slider('Select height range', min_value=int(players_df['height_cm'].min()), max_value=int(players_df['height_cm'].max()), value=(int(players_df['height_cm'].min()), int(players_df['height_cm'].max())))
 
     # Filter data based on selected criteria
     filtered_df = players_df[
@@ -182,42 +194,56 @@ elif action == 'Scout players based on your criteria':
         (players_df['Tackling'] >= min_tackling) &
         (players_df['Tackling'] <= max_tackling) &
         (players_df['Aerials won'] >= min_aerials_won) &
-        (players_df['Aerials won'] <= max_aerials_won)
+        (players_df['Aerials won'] <= max_aerials_won) &
+        (players_df['pace'] >= min_pace) &
+        (players_df['pace'] <= max_pace) &
+        (players_df['height_cm'] >= min_height) &
+        (players_df['height_cm'] <= max_height)
     ]
 
     # Display the filtered table with specific columns
     columns_to_display = [
         'full_name', 'age', 'league', 'position', 'Current Club',
-        'Shooting', 'shot/goal conversion', 'Vision', 'Crossing', 'Dribbling',
-        'Possession', 'Interceptions', 'Tackling', 'Aerials won', 'Defense'
+        'Shooting', 'Vision', 'Crossing', 'Dribbling',
+        'Possession', 'Interceptions', 'Tackling', 'Aerials won', 'pace','height_cm'
     ]
     st.dataframe(filtered_df[columns_to_display], width=800, height=None)
 
 
 # Option 3: Find similar players
 elif action == 'Find similar players':
-    st.write("Select your player")
+    #st.write("Select your player")
     selected_player = st.selectbox('Select player', players_df['full_name'].unique())
 
-    st.write("Select age")
+    #st.write("Select age")
     selected_age = st.slider('Select age', min_value=int(players_df['age'].min()), max_value=int(players_df['age'].max()), value=(int(players_df['age'].min()), int(players_df['age'].max())))
 
-    st.write("Select league")
+    #st.write("Select league")
     selected_leagues = st.multiselect('Select league', players_df['league'].unique(), default=players_df['league'].unique())
 
-    # Filter data based on selected player, age, and league
+    #st.write("Select height (cm)")
+    selected_height = st.slider('Select height (cm)', min_value=int(players_df['height_cm'].min()), max_value=int(players_df['height_cm'].max()), value=(int(players_df['height_cm'].min()), int(players_df['height_cm'].max())))
+
+    #st.write("Select pace in FIFA 23")
+    selected_pace = st.slider('Select pace in FIFA 23', min_value=int(players_df['pace'].min()), max_value=int(players_df['pace'].max()), value=(int(players_df['pace'].min()), int(players_df['pace'].max())))
+
+    # Filter data based on selected player, age, league, height, and pace
     filtered_players_df = players_df[
         (players_df['full_name'] != selected_player) &
         (players_df['age'] >= selected_age[0]) &
         (players_df['age'] <= selected_age[1]) &
-        (players_df['league'].isin(selected_leagues))
+        (players_df['league'].isin(selected_leagues)) &
+        (players_df['height_cm'] >= selected_height[0]) &
+        (players_df['height_cm'] <= selected_height[1]) &
+        (players_df['pace'] >= selected_pace[0]) &
+        (players_df['pace'] <= selected_pace[1])
     ]
 
     # Select the player data
-    selected_player_data = players_df[players_df['full_name'] == selected_player][['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won']]
+    selected_player_data = players_df[players_df['full_name'] == selected_player][['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won', 'pace']]
 
     # Calculate cosine similarity between the selected player and other players
-    similarity_scores = cosine_similarity(selected_player_data, filtered_players_df[['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won']])
+    similarity_scores = cosine_similarity(selected_player_data, filtered_players_df[['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won', 'pace']])
 
     # Add similarity scores to the filtered dataframe
     filtered_players_df['Similarity score'] = similarity_scores[0]
@@ -229,10 +255,10 @@ elif action == 'Find similar players':
     st.write("Top 5 most similar players:")
     st.dataframe(top_5_similar_players[['full_name', 'age', 'league', 'Similarity score']])
 
-    # Radar chart for the selected player and the top 5 similar players
-    radar_data = pd.concat([selected_player_data, top_5_similar_players[['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won']]])
+     # Radar chart for the selected player and the top 5 similar players
+    radar_data = pd.concat([selected_player_data, top_5_similar_players[['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won', 'pace']]])
     radar_data['Player'] = [selected_player] + list(top_5_similar_players['full_name'])
-    radar_data_melted = pd.melt(radar_data, id_vars=['Player'], value_vars=['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won'], var_name='attribute', value_name='score')
+    radar_data_melted = pd.melt(radar_data, id_vars=['Player'], value_vars=['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won', 'pace'], var_name='attribute', value_name='score')
 
     fig_radar = px.line_polar(radar_data_melted, r='score', theta='attribute', line_close=True, color='Player')
 
@@ -247,7 +273,7 @@ elif action == 'Find similar players':
         return None
 
     # Highlight player with the highest value in each attribute
-    for attribute in ['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won']:
+    for attribute in ['Shooting', 'Vision', 'Possession', 'Crossing', 'Dribbling', 'Interceptions', 'Tackling', 'Aerials won', 'pace']:
         max_player_name = radar_data.loc[radar_data[attribute].idxmax(), 'Player']
         max_player_score = radar_data.loc[radar_data[attribute].idxmax(), attribute]
         player_color = get_player_color(max_player_name)

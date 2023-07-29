@@ -276,7 +276,7 @@ elif action == 'Find similar players':
        similarity_score = player_row['Similarity score']
        player_age = player_row['age']
        player_league = player_row['league']
-       player_position = player_row['player_positions']
+       player_position = player_row['position']
 
        if player_image_url:
            # Display the image of the player

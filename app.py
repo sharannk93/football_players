@@ -12,7 +12,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from sklearn.metrics.pairwise import cosine_similarity
-from data_loader import load_players_data
+#from data_loader import load_players_data
 
 # Load the CSV file
 players_df = pd.read_csv('players.csv')

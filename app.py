@@ -18,6 +18,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 players_df = pd.read_csv('players.csv')
 #players_df = load_players_data()
 
+# Import the CSS file
+css_file = open("styles/app.css")
+st.markdown(f"<style>{css_file.read()}</style>", unsafe_allow_html=True)
+css_file.close()
+
 # Set bigger font size for the whole app
 st.markdown(
     """
@@ -43,7 +48,7 @@ st.markdown(
 )
 
 # Title of the page aligned to the left
-st.title('SKOUT')
+st.markdown('<div class="typewriter"><h1>S<div class="kletter">K</div>OUT</h1></div>', unsafe_allow_html=True)
     
 
 # Question: What do you want to do?

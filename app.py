@@ -285,13 +285,13 @@ with similar :
         #     # If player_image_url is NaN, display the 'blank_face.png' image
         #     st.image('blank_face.png', caption=player_name, width=150)
 
-         if player_image_url:
+        if player_image_url:
            # Display the image of the player
            # st.image(player_image_url, caption=player_name, width=150)
            # Display the Rank, league, age, and similarity score
-            st.write(f"<div style='display: flex; background-color:#363e75; border-radius: 50px; margin-bottom: 30px; align-items: center;'><div style='width: 30%;padding-right:20px;padding-left:20px'><img style='width: 100%; border-radius: 50%; background-image: linear-gradient(#262c52, #4b5eff); overflow: hidden;' src='{player_image_url if player_image_url is not None else "blank_face.png"}'></div><div style='width: 50%; display: flex; flex-direction: column;'> <p style='margin-top: 10px; font-size: 24px; '><b>{player_name}</b></p><p style='margin: 0; font-size: 16px;'><b>League:</b> {player_league}</p><p style='margin: 0; font-size: 16px;'><b>Age:</b> {player_age}</p><p style='font-size: 16px;'><b>Positions:</b> {player_position}</p><p style='font-size: 16px;'><b>Similarity Score:</b> {similarity_score}</p></div><div style='width: 20%; display: flex; flex-direction: column; justify-content: center; align-items: center;'><p style='font-size: 60px; margin: 0;'><b>#{rank}</b></p></div></div>", unsafe_allow_html=True)
+           st.write(f'<div style="display: flex; background-color:#363e75; border-radius: 50px; margin-bottom: 30px; align-items: center;"><div style="width: 30%;padding-right:20px;padding-left:20px"><img style="width: 100%; border-radius: 50%; background-image: linear-gradient(#262c52, #4b5eff); overflow: hidden;" src="{player_image_url if player_image_url is not None else "blank_face.png"}"></div><div style="width: 50%; display: flex; flex-direction: column;"> <p style="margin-top: 10px; font-size: 24px; "><b>{player_name}</b></p><p style="margin: 0; font-size: 16px;"><b>League:</b> {player_league}</p><p style="margin: 0; font-size: 16px;"><b>Age:</b> {player_age}</p><p style="font-size: 16px;"><b>Positions:</b> {player_position}</p><p style="font-size: 16px;"><b>Similarity Score:</b> {similarity_score}</p></div><div style="width: 20%; display: flex; flex-direction: column; justify-content: center; align-items: center;"><p style="font-size: 60px; margin: 0;"><b>#{rank}</b></p></div></div>', unsafe_allow_html=True)
 
-         else:
+        else:
            st.write(f"Image not available for {player_name}.")
 
 

@@ -43,11 +43,11 @@ st.markdown(
 )
 
 # Title of the page aligned to the left
-st.title('Football Player Analysis by Sharan')
+st.title('SKOUT')
     
 
 # Question: What do you want to do?
-action = st.radio('What do you want to do', ('Compare selected players of your choice', 'Scout players based on your criteria', 'Find similar players'))
+compare,scout, similar = st.tabs(['Compare', 'Scout', 'Similar'])
 
 # Button to explain scoring
 explain_scoring_button = st.button("Explain scoring")
@@ -95,7 +95,7 @@ if explain_scoring_button:
 
 
 # Option 1: Compare selected players
-if action == 'Compare selected players of your choice':
+with compare :
     st.write("Select players to compare")
     selected_players = st.multiselect('Select players', players_df['full_name'].unique())
 
@@ -133,7 +133,7 @@ if action == 'Compare selected players of your choice':
 
 
 # Option 2: Scout players based on criteria
-elif action == 'Scout players based on your criteria':
+with scout :
     # Question 1: Which position do you want to scout?
     selected_positions = st.multiselect('Which position do you want to scout?', players_df['position'].unique(), default=players_df['position'].unique())
 
@@ -211,7 +211,7 @@ elif action == 'Scout players based on your criteria':
 
 
 # Option 3: Find similar players
-elif action == 'Find similar players':
+with similar :
     #st.write("Select your player")
     selected_player = st.selectbox('Select player', players_df['full_name'].unique())
 
@@ -278,19 +278,21 @@ elif action == 'Find similar players':
         player_league = player_row['league']
         player_position = player_row['position']
     
-        if pd.notna(player_image_url):
-            # Display the image of the player if player_image_url is not NaN
-            st.image(player_image_url, caption=player_name, width=150)
-        else:
-            # If player_image_url is NaN, display the 'blank_face.png' image
-            st.image('blank_face.png', caption=player_name, width=150)
+        # if pd.notna(player_image_url):
+        #     # Display the image of the player if player_image_url is not NaN
+        #     st.image(player_image_url, caption=player_name, width=150)
+        # else:
+        #     # If player_image_url is NaN, display the 'blank_face.png' image
+        #     st.image('blank_face.png', caption=player_name, width=150)
 
-        # Display the Rank, league, age, and similarity score
-        st.write(f"<p style='font-size: 16px;'><b>Rank {rank}</b></p>", unsafe_allow_html=True)
-        st.write(f"<p style='font-size: 16px;'><b>League:</b> {player_league}</p>", unsafe_allow_html=True)
-        st.write(f"<p style='font-size: 16px;'><b>Age:</b> {player_age}</p>", unsafe_allow_html=True)
-        st.write(f"<p style='font-size: 16px;'><b>Position:</b> {player_position}</p>", unsafe_allow_html=True)
-        st.write(f"<p style='font-size: 16px;'><b>Similarity Score:</b> {similarity_score}</p>", unsafe_allow_html=True)
+         if player_image_url:
+           # Display the image of the player
+           # st.image(player_image_url, caption=player_name, width=150)
+           # Display the Rank, league, age, and similarity score
+            st.write(f"<div style='display: flex; background-color:#363e75; border-radius: 50px; margin-bottom: 30px; align-items: center;'><div style='width: 30%;padding-right:20px;padding-left:20px'><img style='width: 100%; border-radius: 50%; background-image: linear-gradient(#262c52, #4b5eff); overflow: hidden;' src='{player_image_url if player_image_url is not None else "blank_face.png"}'></div><div style='width: 50%; display: flex; flex-direction: column;'> <p style='margin-top: 10px; font-size: 24px; '><b>{player_name}</b></p><p style='margin: 0; font-size: 16px;'><b>League:</b> {player_league}</p><p style='margin: 0; font-size: 16px;'><b>Age:</b> {player_age}</p><p style='font-size: 16px;'><b>Positions:</b> {player_position}</p><p style='font-size: 16px;'><b>Similarity Score:</b> {similarity_score}</p></div><div style='width: 20%; display: flex; flex-direction: column; justify-content: center; align-items: center;'><p style='font-size: 60px; margin: 0;'><b>#{rank}</b></p></div></div>", unsafe_allow_html=True)
+
+         else:
+           st.write(f"Image not available for {player_name}.")
 
 
     st.markdown("<span style='font-size: 40px;'>Analytics </span>", unsafe_allow_html=True)

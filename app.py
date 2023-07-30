@@ -218,11 +218,11 @@ elif action == 'Find similar players':
   # Find the URL of the selected player's image
     selected_player_image_url = players_df.loc[players_df['full_name'] == selected_player, 'player_face_url'].values[0]
 
-    # Display the image of the selected player
-    if selected_player_image_url:
+    # Display the image of the selected player or use 'blank_face.png' if player_face_url is NaN
+    if pd.notna(selected_player_image_url):
         st.image(selected_player_image_url, caption=selected_player, width=200)
     else:
-        st.write(f"Image not available for {selected_player}.")
+        st.image('blank_face.png', caption=selected_player, width=200)
    
     
     # st.write("Select age")
@@ -271,24 +271,27 @@ elif action == 'Find similar players':
     
     # Display the images of the top 5 similar players
     for rank, (_, player_row) in enumerate(top_5_similar_players.iterrows(), 1):
-       player_name = player_row['full_name']
-       player_image_url = player_row['player_face_url']
-       similarity_score = player_row['Similarity score']
-       player_age = player_row['age']
-       player_league = player_row['league']
-       player_position = player_row['position']
+        player_name = player_row['full_name']
+        player_image_url = player_row['player_face_url']
+        similarity_score = player_row['Similarity score']
+        player_age = player_row['age']
+        player_league = player_row['league']
+        player_position = player_row['position']
+    
+        if pd.notna(player_image_url):
+            # Display the image of the player if player_image_url is not NaN
+            st.image(player_image_url, caption=player_name, width=150)
+        else:
+            # If player_image_url is NaN, display the 'blank_face.png' image
+            st.image('blank_face.png', caption=player_name, width=150)
 
-       if player_image_url:
-           # Display the image of the player
-           st.image(player_image_url, caption=player_name, width=150)
-           # Display the Rank, league, age, and similarity score
-           st.write(f"<p style='font-size: 16px;'><b>Rank {rank}</b></p>", unsafe_allow_html=True)
-           st.write(f"<p style='font-size: 16px;'><b>League:</b> {player_league}</p>", unsafe_allow_html=True)
-           st.write(f"<p style='font-size: 16px;'><b>Age:</b> {player_age}</p>", unsafe_allow_html=True)
-           st.write(f"<p style='font-size: 16px;'><b>Positions:</b> {player_position}</p>", unsafe_allow_html=True)
-           st.write(f"<p style='font-size: 16px;'><b>Similarity Score:</b> {similarity_score}</p>", unsafe_allow_html=True)
-       else:
-           st.write(f"Image not available for {player_name}.")
+    # Display the Rank, league, age, and similarity score
+    st.write(f"<p style='font-size: 16px;'><b>Rank {rank}</b></p>", unsafe_allow_html=True)
+    st.write(f"<p style='font-size: 16px;'><b>League:</b> {player_league}</p>", unsafe_allow_html=True)
+    st.write(f"<p style='font-size: 16px;'><b>Age:</b> {player_age}</p>", unsafe_allow_html=True)
+    st.write(f"<p style='font-size: 16px;'><b>Position:</b> {player_position}</p>", unsafe_allow_html=True)
+    st.write(f"<p style='font-size: 16px;'><b>Similarity Score:</b> {similarity_score}</p>", unsafe_allow_html=True)
+
 
     st.markdown("<span style='font-size: 40px;'>Analytics </span>", unsafe_allow_html=True)
      # Radar chart for the selected player and the top 5 similar players

@@ -285,12 +285,12 @@ elif action == 'Find similar players':
             # If player_image_url is NaN, display the 'blank_face.png' image
             st.image('blank_face.png', caption=player_name, width=150)
 
-    # Display the Rank, league, age, and similarity score
-    st.write(f"<p style='font-size: 16px;'><b>Rank {rank}</b></p>", unsafe_allow_html=True)
-    st.write(f"<p style='font-size: 16px;'><b>League:</b> {player_league}</p>", unsafe_allow_html=True)
-    st.write(f"<p style='font-size: 16px;'><b>Age:</b> {player_age}</p>", unsafe_allow_html=True)
-    st.write(f"<p style='font-size: 16px;'><b>Position:</b> {player_position}</p>", unsafe_allow_html=True)
-    st.write(f"<p style='font-size: 16px;'><b>Similarity Score:</b> {similarity_score}</p>", unsafe_allow_html=True)
+        # Display the Rank, league, age, and similarity score
+        st.write(f"<p style='font-size: 16px;'><b>Rank {rank}</b></p>", unsafe_allow_html=True)
+        st.write(f"<p style='font-size: 16px;'><b>League:</b> {player_league}</p>", unsafe_allow_html=True)
+        st.write(f"<p style='font-size: 16px;'><b>Age:</b> {player_age}</p>", unsafe_allow_html=True)
+        st.write(f"<p style='font-size: 16px;'><b>Position:</b> {player_position}</p>", unsafe_allow_html=True)
+        st.write(f"<p style='font-size: 16px;'><b>Similarity Score:</b> {similarity_score}</p>", unsafe_allow_html=True)
 
 
     st.markdown("<span style='font-size: 40px;'>Analytics </span>", unsafe_allow_html=True)

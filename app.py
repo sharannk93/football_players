@@ -52,7 +52,7 @@ st.markdown('<div class="typewriter"><h1>S<div class="kletter">K</div>OUT</h1></
     
 
 # Question: What do you want to do?
-compare,scout, similar = st.tabs(['Compare', 'Scout', 'Similar'])
+compare,scout, similar = st.tabs(['Similar', 'Compare', 'Scout'])
 
 # Button to explain scoring
 explain_scoring_button = st.button("Explain scoring")

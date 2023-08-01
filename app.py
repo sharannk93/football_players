@@ -214,7 +214,7 @@ with similar :
 
 # Option 2: Compare selected players
 with compare :
-    st.experimental_rerun()  # This line will force the app to re-run this block whenever the "compare" tab is clicked
+    #st.experimental_rerun()  # This line will force the app to re-run this block whenever the "compare" tab is clicked
     st.write("Select players to compare")
     selected_players = st.multiselect('Select players', players_df['full_name'].unique())
 
@@ -253,7 +253,7 @@ with compare :
 
 # Option 3: Scout players based on criteria
 with scout :
-    st.experimental_rerun()  # This line will force the app to re-run this block whenever the "Similar" tab is clicked
+    #st.experimental_rerun()  # This line will force the app to re-run this block whenever the "Similar" tab is clicked
     # Question 1: Which position do you want to scout?
     selected_positions = st.multiselect('Which position do you want to scout?', players_df['position'].unique(), default=players_df['position'].unique())
 

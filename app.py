@@ -100,7 +100,7 @@ if explain_scoring_button:
 
 # Option 1: Find similar players
 with similar :
-    st.experimental_rerun()  # This line will force the app to re-run this block whenever the "Similar" tab is clicked
+    #st.experimental_rerun()  # This line will force the app to re-run this block whenever the "Similar" tab is clicked
     #st.write("Select your player")
     selected_player = st.selectbox('Select player', players_df['full_name'].unique())
 
